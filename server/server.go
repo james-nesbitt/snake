@@ -1,11 +1,30 @@
 package server
 
+/**
+ * A snake server. The component which can be used to handle snake mechanics
+ * for a front end, using channels for interaction.
+ *
+ * The Server is a struct which provides incoming and outgoing channels:
+ *   tick : a clock tick in the snake game (incoming)
+ *   turn : a snake direction turn event (incoming)
+ *   needs-food : new food placement is needed (food was eaten)
+ *   collision-boundary : the snake ran into the grid boundary (outgoing)
+ *   collision-snake : the snale ran into itself (outgoing)
+ *
+ * The server must be "Start"ed before interacting with the channels, which
+ * needs a context that can be used to kill the Server game.
+ *
+ * @TODO the Start method has a context which can be used to stop it, so the
+ *    Stop method should probably be removed
+ */
+
 import (
 	"context"
 	"github.com/james-nesbitt/snake/game"
 	"log"
 )
 
+// NewServer server constructor.  Don't forget to Start before using it
 func NewServer(g *game.Game) Server {
 	tk := make(chan int)
 	tn := make(chan game.Vector)
@@ -18,12 +37,16 @@ func NewServer(g *game.Game) Server {
 
 /**
  * A server object which can be used to interact with a game as a backend
+ *
+ * @TODO chans should be strict about incoming and outgoing.
  */
 type Server struct {
 	Game *game.Game
+
 	// Incoming instructions
-	Tick chan int         // Game tick (step)
-	Turn chan game.Vector // Snake turn
+	Tick chan int         // Game tick (step) trigger
+	Turn chan game.Vector // Snake turn trigger
+
 	// Outgoing info
 	NeedsFood chan chan game.Point // Food was eaten (new food needed on the passed chan)
 
@@ -32,6 +55,8 @@ type Server struct {
 	SnakeCollision    chan error
 }
 
+// Start the server running a game by open all channels and listening on then in
+// a game loop
 func (s *Server) Start(ctx context.Context) {
 	log.Printf("START SNAKE SERVER")
 

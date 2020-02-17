@@ -8,7 +8,17 @@ import (
 )
 
 /**
- * Some helper functionality for Responding to the NeedsFood signal
+ * Some helper functionality for Responding to the NeedsFood signal in
+ * some standard ways - useful for real play, and testing.
+ *
+ * This came out as a way to standardize food creation for testing, but formed a
+ * pattern that was useful in actual server play.
+ *
+ * Options are:
+ *  1. random new food position, but make sure to not put food on top of the snake
+ *  2. pull next food positions from an array for deterministic testing
+ *  3. put new food in a relational position from the previous food position for
+ *     relational testing.
  */
 
 // Something that can MakeFood points
@@ -16,8 +26,15 @@ type MakeFood interface {
 	NextFood() game.Point
 }
 
-// A handler function that can be put in charge of making Food, when asked for
-// @USAGE use this as a subroutine for responding to a NeedsFood chan
+/**
+ * A handler function that can be put in charge of making Food, when needed
+ * @USAGE use this as a subroutine for responding to a NeedsFood chan
+ *
+ * @param MakeFood mf : a food maker which will make food whenever it is needed
+ * @param chan chan game.Point nf : the channel which indicates that food is needed
+ *    and provides a chan for returning the new food point
+ * @param context.Context ctx : a kill context provider
+ */
 func NeedFoodHandler(mf MakeFood, nf chan chan game.Point, ctx context.Context) {
 	log.Printf("Starting to listen for NeedFood events")
 	for {

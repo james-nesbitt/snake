@@ -9,10 +9,11 @@ import (
 )
 
 var (
-	testTick = time.Millisecond * 5
+	testTick = time.Millisecond * 5 // a tick that we can use for testing, so
+	                                // that we can turn and place food as well
 )
 
-// Use a clock ticker and do some simple snake game
+// Use a clock ticker and do some simple snake game, simple checking
 func Test_BasicTimedServer(t *testing.T) {
 	ticker := time.NewTicker(testTick)
 	defer ticker.Stop()
@@ -80,7 +81,7 @@ func Test_SnakeWanderServer(t *testing.T) {
 	}
 }
 
-// Test some game snake wandering.  Move and Grow
+// Test some game snake wandering.  Move and Grow along a significant path
 func Test_SnakePlayAGame(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
@@ -148,7 +149,7 @@ func Test_SnakePlayAGame(t *testing.T) {
 	s.Tick <- 9
 }
 
-// Test some game snake wandering.  Move and Grow
+// Test Move and Grow and end up in a self-collision
 func Test_SnakeSelfCollide(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
