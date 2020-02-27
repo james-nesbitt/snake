@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-  "fmt"
+	"fmt"
 	"github.com/james-nesbitt/snake/game"
 	"github.com/james-nesbitt/snake/server"
 	"github.com/jroimartin/gocui"
@@ -15,18 +15,18 @@ var (
 	foodStart  = game.Point{X: 0, Y: 0}
 	tickPeriod = time.Second
 
-	i int // game ticks
-  t *time.Ticker
-  ctx context.Context
-  cancel func()
-  g game.Game
-  err error
-  s server.Server
-  mf server.MakeFood
-	h []string
+	i      int // game ticks
+	t      *time.Ticker
+	ctx    context.Context
+	cancel func()
+	g      game.Game
+	err    error
+	s      server.Server
+	mf     server.MakeFood
+	h      []string
 
-  gu *gocui.Gui
-	hv *gocui.View  // History view
+	gu *gocui.Gui
+	hv *gocui.View // History view
 	gv *gocui.View // Game/Grid view
 	lv *gocui.View // Log view
 )
@@ -42,11 +42,10 @@ func init() {
 	}
 
 	s = server.NewServer(&g)
-  mf = server.NewMakeFood_Random(&g)
+	mf = server.NewMakeFood_Random(&g)
 
 	h = []string{}
 }
-
 
 func main() {
 	var err error
