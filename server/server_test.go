@@ -10,7 +10,7 @@ import (
 
 var (
 	testTick = time.Millisecond * 5 // a tick that we can use for testing, so
-	                                // that we can turn and place food as well
+	// that we can turn and place food as well
 )
 
 // Use a clock ticker and do some simple snake game, simple checking
